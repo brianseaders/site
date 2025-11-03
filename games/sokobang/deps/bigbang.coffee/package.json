@@ -1,0 +1,31 @@
+{
+  "name"            : "bigbang",
+  "homepage"        : "https://github.com/obfusk/bigbang.coffee",
+  "description"     : "graphical/evented functional programming for js/coffee",
+
+  "version"         : "0.2.1",
+  "author"          : "Felix C. Stegerman <flx@obfusk.net>",
+
+  "keywords"        : [ "fp", "bigbang", "evented", "functional", "games" ],
+
+  "licenses": [
+    { "type"        : "LGPLv3+",
+      "url"         : "http://www.gnu.org/licenses/lgpl-3.0.html" }
+  ],
+
+  "repository": {
+    "type"          : "git",
+    "url"           : "https://github.com/obfusk/bigbang.coffee.git"
+  },
+
+  "main"            : "src/bigbang.js",
+  "files"           : [ "src/bigbang.js", "README.md" ],
+
+  "dependencies"    : { "underscore": ">=1.6.0" },
+  "devDependencies" : { "coffee-script": ">=1.7.1" },
+
+  "scripts": {
+    "prepublish"    : "coffee -c src/bigbang.coffee",
+    "test"          : "jasmine-node --coffee spec/"
+  }
+}

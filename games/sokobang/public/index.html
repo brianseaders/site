@@ -1,0 +1,327 @@
+<!doctype html>
+<!--
+
+  File        : templates/index.html
+  Maintainer  : FC Stegerman <flx@obfusk.net>
+  Date        : 2020-09-08
+
+  Copyright   : Copyright (C) 2020  FC Stegerman
+  Version     : v0.2.1
+  License     : AGPLv3+
+
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Sokoban(g)</title>
+    <link rel="stylesheet" href="css/bootstrap-flatly.min.css" />
+<!--<link rel="stylesheet" href="css/bootstrap-darkly.min.css" />-->
+    <style>
+      #game, .zoom  { max-height: calc(100vh - 200px); }
+      #game         { overflow: auto; }
+      .zoom         { object-fit: contain; max-width: 100%; }
+      #CANVAS       { display: block; border: 1px solid black;
+                      background-color: #666; }
+      .nowrap       { display: inline-block; }
+    </style>
+    <script src="js/jquery-3.5.1.min.js"></script>
+<!--<script src="js/popper-1.16.0.min.js"></script>-->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/underscore-min.js"></script>
+    <script src="js/alert.js"></script>
+    <script src="coffee/bigbang.js?t=1599597180.1780813"></script>
+    <script src="coffee/sokobang.js?t=1599597180.1780813"></script>
+    <script src="coffee/start.js?t=1599597180.1780813"></script>
+  </head>
+  <body class="text-center">
+    <div id="images" class="d-none">
+      <img id="goal_img"        src="img/goal.png"        alt="IMG" />
+      <img id="object_goal_img" src="img/object_goal.png" alt="IMG" />
+      <img id="object_img"      src="img/object.png"      alt="IMG" />
+      <img id="person_goal_img" src="img/person_goal.png" alt="IMG" />
+      <img id="person_img"      src="img/person.png"      alt="IMG" />
+      <img id="wall_img"        src="img/wall.png"        alt="IMG" />
+    </div>
+    <div class="container">
+      <div class="row justify-content-center p-1">
+        <div id="controls" class="card col-lg-9">
+          <div class="card-body form-inline justify-content-center align-items-end p-2">
+            <span class="form-group m-1">
+              <label for="sets">Set</label>
+              &nbsp;
+              <select class="form-control" id="sets"></select>
+            </span>
+            <span class="form-group m-1">
+              <label for="levels">Level</label>
+              &nbsp;
+              <select class="form-control" id="levels"></select>
+            </span>
+            <span class="nowrap m-1">
+              <button class="btn btn-primary" id="play">Play</button>
+              <button class="btn btn-primary" id="next">Next »</button>
+            </span>
+            <span class="form-group m-1 form-check form-check-inline w-auto pb-1">
+              <input class="form-check-input" type="checkbox" id="zoom">
+              <label class="form-check-label" for="zoom">Zoom out</label>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="game">
+      <canvas id="CANVAS" class="m-auto"></canvas>
+    </div>
+    <div class="container">
+      <div class="row justify-content-center p-1">
+        <div id="data-and-buttons" class="card col-lg-9">
+          <div class="card-body p-2">
+            <div id="data">
+              <span class="nowrap">
+                <span id="set">?</span>
+                <label>Level</label>
+                <span id="level" class="badge badge-info">?</span>
+                <span id="completed" class="badge badge-success">✓</span>
+              </span>
+              <span class="nowrap">
+                »
+                <span id="moves" class="badge badge-info">?</span>
+                <label>Moves</label>
+                <span id="pushes" class="badge badge-info">?</span>
+                <label>Pushes</label>
+              </span>
+            </div>
+            <div id="buttons" class="mt-1">
+              <button id="left"  class="btn btn-lg btn-outline-primary">⇦</button>
+              <button id="down"  class="btn btn-lg btn-outline-primary">⇩</button>
+              <button id="up"    class="btn btn-lg btn-outline-primary">⇧</button>
+              <button id="right" class="btn btn-lg btn-outline-primary">⇨</button>
+              <button id="undo"  class="btn btn-lg btn-outline-primary">u</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center px-1 pt-0 pb-1">
+        <div class="alert alert-light col-lg-9 mb-0" role="alert">
+          Push all the red gems to the green goal squares (using as
+          few moves and pushes as possible).  Use your keyboard's
+          <strong>arrow keys</strong> or the <strong>arrow
+          buttons</strong> or <strong>click/tap</strong> to the
+          left/right of or above/below the "warehouse keeper" to move;
+          press <strong>u</strong> to undo the last move.
+        </div>
+      </div>
+      <hr/>
+    </div>
+    <footer class="mb-3 mx-3">
+      <small>
+        <span class="nowrap">
+          © 2020 FC Stegerman
+        </span>
+        <a href="https://ko-fi.com/obfusk"
+          target="_blank" rel="noopener"
+          class="btn btn-outline-primary btn-sm py-0">♥ Support</a>
+        <span class="nowrap">
+          » <a href="https://github.com/obfusk/sokobang"
+              target="_blank" rel="noopener">Code</a>:
+          <a href="https://www.gnu.org/licenses/agpl-3.0.html"
+            target="_blank" rel="noopener">AGPLv3+</a>
+          + <a href="#" data-toggle="modal"
+              data-target="#licenses-modal">Dependencies</a>
+        </span>
+        <span class="nowrap">
+          » <a href="README.ksokoban.txt" target="_blank"
+              rel="noopener">Images &amp; Levels</a>
+        </span>
+        <span class="nowrap">
+          » <a href="privacy.txt" target="_blank"
+              rel="noopener">Privacy</a>
+        </span>
+      </small>
+    </footer>
+    <div class="modal" tabindex="-1" role="dialog" id="alert-modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">[...]</h5>
+            <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body d-flex justify-content-end">
+            <button id="alert-ok" class="btn btn-primary">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal text-left" tabindex="-1" role="dialog"
+        id="licenses-modal">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Open Source Licenses</h5>
+            <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            
+              
+              <h6>
+                <a href="https://github.com/pallets/click" target="_blank" rel="noopener">
+                  click
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/click.txt">
+              </iframe>
+              <br/><br/>
+            
+              
+              <h6>
+                <a href="https://github.com/pallets/flask" target="_blank" rel="noopener">
+                  flask
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/flask.txt">
+              </iframe>
+              <br/><br/>
+            
+              
+              <h6>
+                <a href="https://github.com/pallets/itsdangerous" target="_blank" rel="noopener">
+                  itsdangerous
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/itsdangerous.txt">
+              </iframe>
+              <br/><br/>
+            
+              
+              <h6>
+                <a href="https://github.com/pallets/jinja" target="_blank" rel="noopener">
+                  jinja2
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/jinja2.txt">
+              </iframe>
+              <br/><br/>
+            
+              
+              <h6>
+                <a href="https://github.com/libffi/libffi" target="_blank" rel="noopener">
+                  libffi
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/libffi.txt">
+              </iframe>
+              <br/><br/>
+            
+              
+              <h6>
+                <a href="https://github.com/pallets/markupsafe" target="_blank" rel="noopener">
+                  markupsafe
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/markupsafe.txt">
+              </iframe>
+              <br/><br/>
+            
+              
+              <h6>
+                <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">
+                  noto-emoji
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/noto-emoji.txt">
+              </iframe>
+              <br/><br/>
+            
+              
+              <h6>
+                <a href="https://www.openssl.org" target="_blank" rel="noopener">
+                  openssl
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/openssl.txt">
+              </iframe>
+              <br/><br/>
+            
+              
+              <h6>
+                <a href="https://github.com/kivy/python-for-android" target="_blank" rel="noopener">
+                  python-for-android
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/python-for-android.txt">
+              </iframe>
+              <br/><br/>
+            
+              
+              <h6>
+                <a href="https://github.com/kivy/pyjnius" target="_blank" rel="noopener">
+                  pyjnius
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/pyjnius.txt">
+              </iframe>
+              <br/><br/>
+            
+              
+              <h6>
+                <a href="https://www.python.org" target="_blank" rel="noopener">
+                  python3
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/python3.txt">
+              </iframe>
+              <br/><br/>
+            
+              
+              <h6>
+                <a href="https://github.com/pypa/setuptools" target="_blank" rel="noopener">
+                  setuptools
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/setuptools.txt">
+              </iframe>
+              <br/><br/>
+            
+              
+              <h6>
+                <a href="https://github.com/benjaminp/six" target="_blank" rel="noopener">
+                  six
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/six.txt">
+              </iframe>
+              <br/><br/>
+            
+              
+              <h6>
+                <a href="https://www.sqlite.org" target="_blank" rel="noopener">
+                  sqlite3
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/sqlite3.txt">
+              </iframe>
+              <br/><br/>
+            
+              
+              <h6>
+                <a href="https://github.com/pallets/werkzeug" target="_blank" rel="noopener">
+                  werkzeug
+                </a>
+              </h6>
+              <iframe class="w-100" src="licenses/werkzeug.txt">
+              </iframe>
+              
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

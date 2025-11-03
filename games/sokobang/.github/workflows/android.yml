@@ -1,0 +1,98 @@
+name: Android
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    container:
+      image: debian:${{ matrix.container }}
+    strategy:
+      matrix:
+        target:
+        - release-armeabi-v7a
+        - release-arm64-v8a
+        container:
+      # - stretch
+        - buster
+    steps:
+    - name: Install git etc.
+      run: |
+        if grep -q stretch /etc/os-release; then
+          echo 'deb http://deb.debian.org/debian stretch-backports main' \
+            > /etc/apt/sources.list.d/stretch-backports.list
+        fi
+        apt-get update || apt-get update
+        apt-get upgrade -y
+        if ! grep -q stretch /etc/os-release; then
+          apt-get install -y usrmerge
+        fi
+        apt-get install -y git lsb-release wget
+      env:
+        DEBIAN_FRONTEND: noninteractive
+    - name: Setup user
+      run: |
+        adduser --disabled-password --gecos '' vagrant
+    - name: Clone repo
+      run: |
+        su - vagrant -c "
+          set -e
+          mkdir build
+          git init build/dev.obfusk.sokobang
+          cd build/dev.obfusk.sokobang
+          git remote add origin https://github.com/$GITHUB_REPOSITORY
+          git config --local gc.auto 0
+          git fetch --prune --progress --no-recurse-submodules origin \
+            +$GITHUB_SHA:refs/remotes/origin/${GITHUB_REF##*/}
+          git checkout --progress --force -B ${GITHUB_REF##*/} \
+            refs/remotes/origin/${GITHUB_REF##*/}
+          git log -1 --format=%H
+        "
+    - name: Install dependencies (1)
+      run: |
+        ~vagrant/build/dev.obfusk.sokobang/scripts/setup-root.sh
+        ~vagrant/build/dev.obfusk.sokobang/scripts/setup-python.sh
+        ~vagrant/build/dev.obfusk.sokobang/scripts/setup-sqlite.sh
+    - name: Install dependencies (2)
+      run: |
+        mkdir /opt/android-sdk
+        chown vagrant:vagrant /opt/android-sdk
+        su - vagrant -c '
+          set -e
+          ~/build/dev.obfusk.sokobang/scripts/setup-ndk.sh
+          cd build/dev.obfusk.sokobang
+          python3.9 -mvenv ~/env
+          source ~/env/bin/activate
+          PIP_INSTALL="pip3 install" ./scripts/setup-user.sh
+        '
+    - name: System info
+      run: |
+        su - vagrant -c '
+          set -e && cd build/dev.obfusk.sokobang
+          source ~/env/bin/activate
+          uname -a && lsb_release -a
+          git --version && python3 --version
+          java -version && javac -version
+          id && pwd && echo "umask=$(umask)"
+        '
+    - name: Build
+      run: |
+        su - vagrant -c '
+          set -e && cd build/dev.obfusk.sokobang
+          export PATH=/usr/local/bin:/bin:/usr/bin
+          source ~/env/bin/activate
+          make android-${{ matrix.target }}
+        '
+        mkdir bin
+        mv ~vagrant/build/dev.obfusk.sokobang/bin/*.apk bin/
+    - name: SHASUMS
+      run: |
+        sha1sum   bin/*.apk
+        sha256sum bin/*.apk
+        sha512sum bin/*.apk
+    - name: Version
+      run: touch VERSION_"$(git describe --always)"
+    - uses: actions/upload-artifact@v2
+      with:
+        name: sokobang-${{ matrix.container }}-APK
+        path: |
+          VERSION_*
+          bin/*.apk

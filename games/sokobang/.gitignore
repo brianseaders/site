@@ -1,0 +1,9 @@
+*~
+*.swp
+
+/bin
+/tmp
+
+/doc
+/node_modules
+/src/*.js

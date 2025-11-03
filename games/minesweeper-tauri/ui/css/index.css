@@ -1,0 +1,198 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #F7F7F0;
+}
+
+.container {
+    margin: 0 auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #ccc;
+    border-radius: 5px;
+}
+
+.header {
+    height: 50px;
+    margin: 5px auto;
+    background-color: #ccc;
+    border: 2px solid;
+    border-color: #a1a1a1 #fff #fff #a1a1a1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5px;
+}
+
+.info {
+    height: 45px;
+    display: flex;
+    align-items: center;
+}
+
+.digit-img {
+    width: 20px;
+    height: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.digit0 {
+    background-image: url("../images/digit0.png");
+}
+.digit1 {
+    background-image: url("../images/digit1.png");
+}
+.digit2 {
+    background-image: url("../images/digit2.png");
+}
+.digit3 {
+    background-image: url("../images/digit3.png");
+}
+.digit4 {
+    background-image: url("../images/digit4.png");
+}
+.digit5 {
+    background-image: url("../images/digit5.png");
+}
+.digit6 {
+    background-image: url("../images/digit6.png");
+}
+.digit7 {
+    background-image: url("../images/digit7.png");
+}
+.digit8 {
+    background-image: url("../images/digit8.png");
+}
+.digit9 {
+    background-image: url("../images/digit9.png");
+}
+.digit- {
+    background-image: url("../images/digit-.png");
+}
+
+.mineNum {
+    justify-content: start;
+    background-color: #ccc;
+    width: 60px;
+}
+
+.status {
+    background-color: #ccc;
+    width: 30px; 
+    height: 30px;
+    border: 3px solid;
+    border-color:#fff #808080 #808080 #fff;
+}
+
+.status button {
+    width: 30px;
+    height: 25px;
+    margin: 0 auto;
+    background-color: #ccc; 
+    border: none;
+}
+
+.status-img {
+    width: 20px;
+    height: 20px;
+    margin: auto;
+    background-image: url("../images/smile.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-color: #ccc; 
+}
+
+.timeNum {
+    justify-content: end;
+    background-color: #ccc;
+    width: 60px;
+}
+
+.content {
+    /* width: 250px; */
+    margin: 5px auto;
+    background-color: #ccc;
+    border: 2px solid;
+    border-color: #a1a1a1 #fff #fff #a1a1a1;
+}
+
+table{
+    /* 格子之间的缝隙 */
+    margin: 0 auto;
+    border-spacing: 1px;
+    background: #808080;
+}
+
+td {
+    /* padding: 0; */
+    width: 35px;
+    height: 35px;
+    background: #ccc;
+    border: 3px solid transparent;
+    border-color: #fff #a1a1a1 #a1a1a1 #fff;
+    text-align: center;
+}
+
+td.mine {
+    background: url("../images/mine.png") center/cover no-repeat;
+    background-size: 100%;
+}
+td.mine-death {
+    background: url("../images/mine-death.png") center/cover no-repeat;
+    background-size: 100%;
+}
+td.zero{
+    background: url("../images/empty.png") center/cover no-repeat;
+    background-size: 100%;
+}
+td.one{
+    background: url("../images/open1.png") center/cover no-repeat;
+    background-size: 100%;
+}
+td.two {
+    background: url("../images/open2.png") center/cover no-repeat;
+    background-size: 100%;
+}
+td.three {
+    background: url("../images/open3.png") center/cover no-repeat;
+    background-size: 100%;
+}
+td.four {
+    background: url("../images/open4.png") center/cover no-repeat;
+    background-size: 100%;
+}
+td.five {
+    background: url("../images/open5.png") center/cover no-repeat;
+    background-size: 100%;
+}
+td.six {
+    background: url("../images/open6.png") center/cover no-repeat;
+    background-size: 100%;
+}
+td.seven {
+    background: url("../images/open7.png") center/cover no-repeat;
+    background-size: 100%;
+}
+td.eight {
+    background: url("../images/open8.png") center/cover no-repeat;
+    background-size: 100%;
+}
+td.flag {
+    background: url("../images/flag.png") center/cover no-repeat;
+    background-color: #ccc;
+    background-size: 100%;
+}
+td.misflagged {
+    background: url("../images/misflagged.png") center/cover no-repeat;
+    background-color: #ccc;
+    background-size: 100%;
+}
+td.question {
+    background: url("../images/question.png") center/cover no-repeat;
+    background-color: #ccc;
+    background-size: 100%;
+}
